@@ -16,3 +16,7 @@ build/
 .DS_STORE
 
 .env
+
+MovoSI2/
+
+gunicorn.log

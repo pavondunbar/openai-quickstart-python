@@ -1,21 +1,135 @@
 <!DOCTYPE html>
+<html>
 <head>
-  <title>OpenAI Quickstart</title>
-  <link
-    rel="shortcut icon"
-    href="{{ url_for('static', filename='dog.png') }}"
-  />
+  <title>Welcome to Movo SI (Streaming Intelligence)!</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+  <style>
+    /* Box styling */
+    #question {
+      border: 2px solid #ccc;
+      border-radius: 10px; /* Round edges */
+      padding: 15px;
+      margin-top: 20px;
+      width: 100%;
+      resize: none; /* Disable resizing */
+      overflow: auto; /* Allow scrolling when text overflows */
+      white-space: normal; /* Allow text wrapping */
+      font-size: 16px; /* Set font size */
+      font-family: Arial, sans-serif; /* Set font family */
+    }
+
+    .answer-box {
+      border: 2px solid #ccc;
+      border-radius: 10px; /* Round edges */
+      padding: 15px;
+      margin-top: 20px;
+      width: 50%; /* Modified width for answer box */
+      resize: none; /* Disable resizing */
+      overflow: auto; /* Allow scrolling when text overflows */
+      white-space: normal; /* Allow text wrapping */
+      font-size: 16px; /* Set font size */
+      font-family: Arial, sans-serif; /* Set font family */
+    }
+
+    /* Styling for the buttons */
+    button[type="submit"],
+    button.clear-btn {
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 80px;
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    /* Styling for the Logo */
+    img[alt="Logo"] {
+      width: 50%;   /* Set the width to 50% of its container */
+      height: auto; /* This ensures that the aspect ratio of the image is maintained */
+    }
+
+    /* Styling for the loading bar */
+    .loading-bar {
+      display: none; /* Initially hidden */
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0; /* Cover the full viewport */
+      background-color: rgba(0,0,0,0.7); /* Semi-transparent black */
+      z-index: 1000;
+      font-size: 20px;
+      color: white;
+      text-align: center;
+      padding-top: 20%;
+   }
+
+    .loading-content {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 10px;
+      background-color: rgba(255,255,255,0.2);
+   }
+
+    .loading-animation {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid white;
+      border-radius: 50%;
+      border-top: 3px solid transparent;
+      animation: spin 1s linear infinite;
+   }
+
+   @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+   }
+  </style>
 </head>
 
 <body>
-  <img src="{{ url_for('static', filename='dog.png') }}" class="icon" />
-  <h3>Name my pet</h3>
+  <h1>Welcome to Movo SI (Streaming Intelligence)!</h1>
+  <center>
+  <div id="loadingBar" class="loading-bar">
+  <div class="loading-content">
+    <div class="loading-animation"></div>
+    MovoSI is thinking...
+  </div>
+  </div>
+  
   <form action="/" method="post">
-    <input type="text" name="animal" placeholder="Enter an animal" required />
-    <input type="submit" value="Generate names" />
+    <b><label for="question">Ask MovoSI A Question:</label><br></b>
+    <textarea id="question" name="question" placeholder="Ask a question" rows="5" required></textarea><br>
+    <center><button type="submit">Ask MovoSI</button></center><br>
   </form>
-  {% if result %}
-  <div class="result">{{ result }}</div>
+  </center>
+
+  {% if question %}
+  <h2>Your Question to Movo SI:</h2>
+  <p><b>{{ question }}</b></p>
   {% endif %}
+
+  {% if answer %}
+  <div class="answer-box">
+    <h2>Movo SI:</h2>
+    <p>{{ answer }}</p>
+  </div>
+  {% endif %}
+
+  <script>
+    function clearAnswerBox() {
+      var answerBox = document.querySelector('.answer-box');
+      if (answerBox) {
+        answerBox.innerHTML = '';
+      }
+    }
+
+    document.querySelector('form').addEventListener('submit', function() {
+      document.getElementById('loadingBar').style.display = 'block';
+    });
+  </script>
+  <br>
+  <center><img src="{{ url_for('static', filename='movo.png') }}" alt="Logo"></center>
 </body>
+</html>
+
